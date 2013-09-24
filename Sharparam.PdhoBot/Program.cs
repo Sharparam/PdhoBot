@@ -34,14 +34,14 @@ namespace Sharparam.PdhoBot
             {
                 Console.WriteLine("Connect failed: {0}", args.Error);
                 Console.WriteLine("Reconnecting...");
-                _bot.Connect();
+                _bot.Reconnect();
             };
 
             _bot.Disconnected += (sender, args) =>
             {
                 Console.WriteLine("Disconnected!");
                 Console.WriteLine("Reconnecting...");
-                _bot.Connect();
+                _bot.Reconnect();
             };
 
             _bot.MotdReceived += (sender, args) => Console.WriteLine("MOTD Received!");
