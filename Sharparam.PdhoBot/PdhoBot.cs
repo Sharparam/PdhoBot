@@ -172,6 +172,13 @@ namespace Sharparam.PdhoBot
             _client.Disconnect();
         }
 
+        public void Reconnect()
+        {
+            Disconnect();
+            _client.Disconnected += ClientOnDisconnected;
+            Connect();
+        }
+
         private void ClientOnConnected(object sender, EventArgs eventArgs)
         {
             OnConnected();

@@ -29,8 +29,21 @@ namespace Sharparam.PdhoBot
         {
             _bot = new PdhoBot(settings);
             _bot.Connected += (sender, args) => Console.WriteLine("Connected!");
-            _bot.ConnectFailed += (sender, args) => Console.WriteLine("Connect failed: {0}", args.Error);
-            _bot.Disconnected += (sender, args) => Console.WriteLine("Disconnected!");
+
+            _bot.ConnectFailed += (sender, args) =>
+            {
+                Console.WriteLine("Connect failed: {0}", args.Error);
+                Console.WriteLine("Reconnecting...");
+                _bot.Connect();
+            };
+
+            _bot.Disconnected += (sender, args) =>
+            {
+                Console.WriteLine("Disconnected!");
+                Console.WriteLine("Reconnecting...");
+                _bot.Connect();
+            };
+
             _bot.MotdReceived += (sender, args) => Console.WriteLine("MOTD Received!");
             _bot.Registered += (sender, args) => Console.WriteLine("Registered!");
             _bot.MessageReceived += (sender, args) => Console.WriteLine("PRIV ({0}): {1}", args.Source.Name, args.Text);
@@ -70,11 +83,6 @@ namespace Sharparam.PdhoBot
                 case "bc":
                 case "broadcast":
                     _bot.Broadcast(arg);
-                    break;
-                case "rtest":
-                    Console.Write("Sending... ");
-                    _bot.SendRedditMessage("PDHO-bot", "Test Message", "This is a test message");
-                    Console.WriteLine("Sent!");
                     break;
                 case "q":
                 case "exit":
